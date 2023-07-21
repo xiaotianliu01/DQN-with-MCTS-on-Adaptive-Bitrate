@@ -8,7 +8,7 @@ import os
 
 VIDEO_BIT_RATE = [300, 750, 1200, 1850, 2850, 4300]  # Kbps
 M_IN_K = 1000.0
-REBUF_PENALTY = 4.3
+REBUF_PENALTY = 2.8
 SMOOTH_PENALTY = 1
 DEFAULT_BITRATE_INDEX = 0
 EPS = 1e-6
@@ -178,11 +178,11 @@ class MyEnv(core.Env):
         return rebuf_penalty
 
     def _watch_utility(self, bit_rate_index, chunk_index):
-        utility = 2*math.log(self.video_info['chunk_brs'][chunk_index][bit_rate_index] / M_IN_K) + 3
+        utility = math.log(self.video_info['chunk_brs'][chunk_index][bit_rate_index] / 300)
         return utility
 
     def _smooth_penalty(self, bit_rate_index, last_bit_rate_index):
-        smooth_penalty = -SMOOTH_PENALTY * np.abs(VIDEO_BIT_RATE[bit_rate_index] - VIDEO_BIT_RATE[last_bit_rate_index]) / M_IN_K
+        smooth_penalty = -SMOOTH_PENALTY * np.abs(math.log(VIDEO_BIT_RATE[bit_rate_index]/VIDEO_BIT_RATE[last_bit_rate_index]))
         return smooth_penalty
 
     def _get_reward(self, action):
