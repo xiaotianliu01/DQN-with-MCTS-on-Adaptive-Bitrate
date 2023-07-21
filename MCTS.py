@@ -13,7 +13,7 @@ SIGMA = 0.8
 VIS = False
 USE_CRN = True
 SIM_LEN = 90
-BUDGET = 27
+BUDGET = 81
 C_IN_UCT = 1
 
 class Node(object):
